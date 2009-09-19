@@ -40,5 +40,12 @@ get '/:tinyid' do
   items = DB[:tinyurls]
   id = params[:tinyid].to_i(BASE)
   url = items.first(:id => id)
-  redirect url[:url]
+  long_url = url[:url]
+  if !long_url.include? "://"
+    link = "http://"
+    link << url[:url]
+    redirect link
+  else
+    redirect long_url
+  end
 end
